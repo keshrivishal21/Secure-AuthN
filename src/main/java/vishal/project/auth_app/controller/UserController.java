@@ -6,7 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import vishal.project.auth_app.dto.SignUpResponseDto;
+import vishal.project.auth_app.dto.SubscriptionRequestDto;
+import vishal.project.auth_app.dto.SubscriptionResponseDto;
 import vishal.project.auth_app.dto.UpdateRoleDto;
+import vishal.project.auth_app.service.SubscriptionService;
 import vishal.project.auth_app.service.UserService;
 
 
@@ -18,6 +21,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final SubscriptionService subscriptionService;
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -46,5 +50,11 @@ public class UserController {
     public ResponseEntity<SignUpResponseDto> updateUserRole(@Valid @RequestBody UpdateRoleDto updateRoleDto) {
         SignUpResponseDto userDto = userService.updateUserRole(updateRoleDto);
         return ResponseEntity.ok().body(userDto);
+    }
+
+    @PostMapping("/subscribe")
+    public ResponseEntity<SubscriptionResponseDto> subscribe(@Valid @RequestBody SubscriptionRequestDto subscriptionRequestDto) {
+        SubscriptionResponseDto subscriptionResponseDto = subscriptionService.subscribe(subscriptionRequestDto);
+        return ResponseEntity.ok(subscriptionResponseDto);
     }
 }
